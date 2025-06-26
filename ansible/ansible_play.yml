@@ -1,0 +1,17 @@
+---
+- name: Deploy Final Project App
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Clean and package the Maven project
+      shell: mvn clean package
+      args:
+        chdir: "{{ playbook_dir }}/.."
+
+    - name: Build Docker image
+      shell: docker build -t final-project .
+      args:
+        chdir: "{{ playbook_dir }}/.."
+
+    - name: Run Docker container
+      shell: docker run -d --name final-project-app final-project
